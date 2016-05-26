@@ -1,0 +1,2 @@
+#!/bin/sh
+sqlite3 major.db "select * from major;"
