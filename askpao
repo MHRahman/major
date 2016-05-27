@@ -1,7 +1,8 @@
 #!/bin/sh
 q=""
 start=0;
-end=$(sqlite3 major.db "select max(digits) from major;")
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+end=$(sqlite3 $DIR/major.db "select max(digits) from major;")
 if [ -z "$1" ]
 then
   echo start=$start  
@@ -22,9 +23,9 @@ fi
 
 while [ "$q" != "exit" ]
 do 
-  pao=$(sqlite3 major.db "select pao from major where digits <= '$end' and digits >='$start' order by random() limit 1;")
+  pao=$(sqlite3 $DIR/major.db "select pao from major where digits <= '$end' and digits >='$start' order by random() limit 1;")
 # echo $pao
-  sqlite3 major.db "select digits from major where pao='$pao'"
+  sqlite3 $DIR/major.db "select digits from major where pao='$pao'"
   read q
   if [ "$q" = "$pao" ]
   then
