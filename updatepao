@@ -1,0 +1,6 @@
+#!/bin/sh
+digits=$1;
+read pao
+echo "Updating $digits, $pao"
+sqlite3 major.db "update major set pao='$pao' where digits='$digits';"
+
