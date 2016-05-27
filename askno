@@ -1,0 +1,16 @@
+#!/bin/sh
+q=""
+while [ "$q" != "exit" ]
+do 
+  digits=$(sqlite3 major.db "select digits from major order by random() limit 1;")
+# echo $digits
+  sqlite3 major.db "select pao from major where digits='$digits'"
+  read q
+  if [ "$q" = $digits ]
+  then
+    echo "Right!"
+  else
+    echo "Wrong!"
+    echo "It was $digits!"
+  fi
+done

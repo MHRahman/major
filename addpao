@@ -5,6 +5,7 @@ echo $digits
 read pao
 while [ "$pao" != "exit" ]
 do
+  echo "Inserting $digits, $pao"
   sqlite3 major.db "insert into major values($digits, '$pao');"
   digits=$((digits+1));
 read pao

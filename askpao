@@ -1,16 +1,36 @@
 #!/bin/sh
 q=""
+start=0;
+end=$(sqlite3 major.db "select max(digits) from major;")
+if [ -z "$1" ]
+then
+  echo start=$start  
+else
+  start=$1;
+  echo end=$start
+fi
+
+if [ -z "$2" ]
+then
+  echo end=$end
+else
+  end=$2;
+  echo end=$end
+fi
+
+
+
 while [ "$q" != "exit" ]
 do 
-  digits=$(sqlite3 major.db "select digits from major order by random() limit 1;")
-# echo $digits
-  sqlite3 major.db "select pao from major where digits='$digits'"
+  pao=$(sqlite3 major.db "select pao from major where digits <= '$end' and digits >='$start' order by random() limit 1;")
+# echo $pao
+  sqlite3 major.db "select digits from major where pao='$pao'"
   read q
-  if [ "$q" = $digits ]
+  if [ "$q" = "$pao" ]
   then
     echo "Right!"
   else
     echo "Wrong!"
-    echo "It was $digits!"
+    echo "It was $pao!"
   fi
 done
