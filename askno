@@ -1,16 +1,47 @@
 #!/bin/sh
 q=""
+start=0;
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+end=$(sqlite3 $DIR/major.db "select max(digits) from major;")
+echo $end
+if [ -z "$1" ]
+then
+  echo start=$start  
+else
+  start=$1;
+  echo start=$start
+fi
+
+if [ -z "$2" ]
+then
+  if [ "$1" != "" ]
+    then
+      end=$start
+  fi
+  echo end=$end
+else
+  end=$2;
+  echo end=$end
+fi
+
+
+
 while [ "$q" != "exit" ]
 do 
-  digits=$(sqlite3 major.db "select digits from major order by random() limit 1;")
-# echo $digits
-  sqlite3 major.db "select pao from major where digits='$digits'"
+  digits=$(sqlite3 $DIR/major.db "select digits from major where digits <= '$end' and digits >='$start' order by random() limit 1;")
+# echo $pao
+  pao=$(sqlite3 $DIR/major.db "select pao from major where digits='$digits'")
+  echo "Do you remember '$pao'?"
   read q
-  if [ "$q" = $digits ]
+  if [ "$q" = "$digits" ]
   then
     echo "Right!"
   else
-    echo "Wrong!"
-    echo "It was $digits!"
+    while [ "$q" != "$digits" -a "$q" != "exit" ]
+     do
+	echo "Wrong!"
+	echo "It was '$digits'"
+	read q
+     done
   fi
 done

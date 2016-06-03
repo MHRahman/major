@@ -3,6 +3,7 @@ q=""
 start=0;
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 end=$(sqlite3 $DIR/major.db "select max(digits) from major;")
+echo $end
 if [ -z "$1" ]
 then
   echo start=$start  
@@ -13,7 +14,7 @@ fi
 
 if [ -z "$2" ]
 then
-  if [ -n "$start" ]
+  if [ "$1" != "" ]
     then
       end=$start
   fi
